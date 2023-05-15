@@ -161,7 +161,7 @@ public class MinPQ<Key> implements Iterable<Key> {
     }
 
     public int index(Key key){
-        for (int i = 1; i < pq.length; i++) {
+        for (int i = n; i >=1; i--) {
             if (pq[i].equals(key)){
                 return i;
             }
@@ -245,7 +245,7 @@ public class MinPQ<Key> implements Iterable<Key> {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        edu.princeton.cs.algs4.MinPQ<String> pq = new edu.princeton.cs.algs4.MinPQ<String>();
+        MinPQ<String> pq = new MinPQ<String>();
         while (!StdIn.isEmpty()) {
             String item = StdIn.readString();
             if (!item.equals("-")) pq.insert(item);
