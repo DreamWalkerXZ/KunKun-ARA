@@ -6,7 +6,7 @@ public class ARAStar {
     private int[][] maze;
     private Node start;
     private Node goal;
-    private static final int[][] DIRECTIONS = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+    private static final int[][] DIRECTIONS = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 },{ -1 , -1},{ -1 , 1 },{ 1 , -1 },{ 1 , 1 }};
     private MinPQ<Node> OPEN = new MinPQ<>();
     private ArrayList<Node> CLOSED = new ArrayList<>();
     private MinPQ<Node> INCONS = new MinPQ<>();
@@ -14,9 +14,8 @@ public class ARAStar {
     private int width;
     private double epsilon;
     private double epsilonPrime;
-    private double epsilonDecreaseFactor;
     private final double minEpsilon = 1.0;
-    private Node[][] accessed;
+    public Node[][] accessed;
     private Stack<Node> path;
     private boolean isFirstIteration = true;
 
@@ -57,45 +56,6 @@ public class ARAStar {
                 }
             }
         }
-    }
-
-    public double findPath(int[][] maze, int[] start, int[] goal, double epsilon, Stack<Node> path) {
-        int numRows = maze.length;
-        int numCols = maze[0].length;
-
-        double sh = heuristic(start, goal);
-        Node startNode = new Node(start[0], start[1], 0, sh, null);
-        OPEN.insert(startNode);
-
-        while (!OPEN.isEmpty()) {
-            Node current = OPEN.delMin();
-
-            if (current.row == goal[0] && current.col == goal[1]) {
-                while (!path.isEmpty()) {
-                    path.pop();
-                }
-                while (current != null) {
-                    path.push(current);
-                    current = current.parent;
-                }
-                return epsilon; // Return the current epsilon value
-            }
-
-            for (int[] direction : DIRECTIONS) {
-                int newRow = current.row + direction[0];
-                int newCol = current.col + direction[1];
-
-                if (isValid(newRow, newCol, numRows, numCols) && maze[newRow][newCol] == 0) {
-                    double tentativeG = current.g + 1;
-                    double h = heuristic(new int[] { newRow, newCol }, goal);
-
-                    Node neighbor = new Node(newRow, newCol, tentativeG, h, current);
-                    OPEN.insert(neighbor);
-                }
-            }
-        }
-
-        return Double.POSITIVE_INFINITY; // No path found
     }
 
     private static double heuristic(int[] a, int[] b) {
@@ -174,8 +134,7 @@ public class ARAStar {
         System.out.println();
     }
 
-    public Stack<Node> firstIterate() {
-        accessed[0][0] = start;
+    public Stack<Node> firstIterate(Node start) {
         OPEN.insert(start);
         improvePath(maze, goal, path);
         epsilonPrime = Math.min(epsilon, goal.g / findMinSum());
@@ -185,7 +144,7 @@ public class ARAStar {
 
     public Stack<Node> otherIterate() {
         if (epsilonPrime >= minEpsilon) {
-            epsilon *= epsilonDecreaseFactor;
+            epsilon -= 1;
             while (!INCONS.isEmpty())
                 OPEN.insert(INCONS.delMin());
             CLOSED.clear();
@@ -199,16 +158,16 @@ public class ARAStar {
         }
     }
 
-    public Stack<Node> iterate() {
+    public Stack<Node> iterate(Node start) {
         if (isFirstIteration) {
             isFirstIteration = false;
-            return firstIterate();
+            return firstIterate(start);
         } else {
             return otherIterate();
         }
     }
 
-    public ARAStar(int[][] maze, double epsilon, double epsilonDecreaseFactor) {
+    public ARAStar(int[][] maze, double epsilon) {
         this.maze = maze;
         this.height = maze.length;
         this.width = maze[0].length;
@@ -218,6 +177,5 @@ public class ARAStar {
         this.start = new Node(0, 0, 0, height + width - 2, null);
         this.goal = new Node(height - 1, width - 1, Double.POSITIVE_INFINITY, 0, null);
         this.path = new Stack<>();
-        this.epsilonDecreaseFactor = epsilonDecreaseFactor;
     }
 }
