@@ -100,7 +100,7 @@ public class MazeGameFrame extends JFrame implements ActionListener {
     }
 
     private void action() {
-        if (Maze.getEpsilon() == magic[magicIndex][0]) {
+        if ( magic.length > 0 && Maze.getEpsilon() == magic[magicIndex][0]) {
             Maze.blocken(magic[magicIndex][1], magic[magicIndex][2]);
             if (!(Maze.nikeRow == magic[magicIndex][1] && Maze.nikeCol == magic[magicIndex][2])) {
                 boolean flag = false;
@@ -125,7 +125,7 @@ public class MazeGameFrame extends JFrame implements ActionListener {
             if (magicIndex < magic.length - 1)
                 magicIndex++;
         }
-        if (Maze.getEpsilon() == question[questionIndex]) {
+        if ( question.length > 0 && Maze.getEpsilon() == question[questionIndex]) {
             showPath();
             if (questionIndex < question.length - 1)
                 questionIndex++;
@@ -139,7 +139,7 @@ public class MazeGameFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        while (Maze.getEpsilon() > question[questionIndex]) {
+        while ( question.length > 0 && Maze.getEpsilon() > question[questionIndex]) {
             action();
         }
         action();

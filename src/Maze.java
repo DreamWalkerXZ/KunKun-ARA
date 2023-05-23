@@ -19,7 +19,7 @@ public class Maze extends JComponent {
         Maze_height = maze.length;
         Maze_width = maze[0].length;
         this.epsilon = epsilon;
-        mazeComponents = new MazeComponent[Maze_width][Maze_height];
+        mazeComponents = new MazeComponent[Maze_height][Maze_width];
         this.maze = new int[Maze_height][Maze_width];
         for (int i = 0; i < maze.length; i++) {
             for (int j = 0; j < maze[0].length; j++) {
