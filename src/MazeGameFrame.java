@@ -13,7 +13,6 @@ public class MazeGameFrame extends JFrame implements ActionListener{
     public final int Maze_width;
     public final int Maze_height;
     private int epsilon;
-    private int Cell_Size;
     Maze Maze;
     private int[][] maze;
     private int[][] magic;
@@ -31,7 +30,6 @@ public class MazeGameFrame extends JFrame implements ActionListener{
         this.Maze_width = WIDTH * 850 / 1000;
         this.Maze_height = HEIGTH * 850 / 1000;
         this.maze = new int[maze.length][maze[0].length];
-        Cell_Size = width / Maze_width;
         araStar = new ARAStar(maze, epsilon);
         path = araStar.iterate(new Node(0,0,0,maze.length + maze[0].length - 2,null));
         if(!path.isEmpty()) path.pop();

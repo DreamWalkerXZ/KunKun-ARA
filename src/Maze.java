@@ -10,12 +10,12 @@ public class Maze extends JComponent {
 
     private MazeComponent[][] mazeComponents;
     private final int Cell_size;
-    public static JLabel epsilonLabel;
-    public static JLabel positionLabel;
+    public JLabel epsilonLabel;
+    public JLabel positionLabel;
     private int epsilon;
     private int[][] maze;
-    public static int nikeRow = 0;
-    public static int nikeCol = 0;
+    public int nikeRow = 0;
+    public int nikeCol = 0;
 
 
     public Maze(int width, int height, int epsilon, int[][] maze) {
