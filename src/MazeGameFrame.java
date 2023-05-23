@@ -94,8 +94,7 @@ public class MazeGameFrame extends JFrame implements ActionListener{
         button.addActionListener(this);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent event){
+    private void Magical(){
         if (Maze.getEpsilon() == magic[magicIndex][0]){
             boolean flag = false;
             for (Node node: path) {
@@ -113,6 +112,9 @@ public class MazeGameFrame extends JFrame implements ActionListener{
                 path.pop();
             }
         }
+    }
+
+    private void Questioning(){
         if (Maze.getEpsilon() == question[questionIndex]){
             JFrame frame = new JFrame("Text Output");
             JTextArea textArea = new JTextArea();
@@ -145,6 +147,12 @@ public class MazeGameFrame extends JFrame implements ActionListener{
             frame.setVisible(true);
             if (questionIndex < question.length-1) questionIndex++;
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent event){
+        Magical();
+        Questioning();
         if (!path.isEmpty()) {
             Node node = path.pop();
             Maze.swapMazeComponents(Maze.getMazeComponents()[Maze.nikeRow][Maze.nikeCol],
