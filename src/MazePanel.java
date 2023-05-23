@@ -6,10 +6,12 @@ public class MazePanel extends JPanel {
     private int[][] maze;
     private int cellSize;
     private Color[][] overrideCellColors;
+    public boolean[][] invalidMagic;
 
     public MazePanel(int[][] maze, int cellSize) {
         this.maze = maze;
         this.cellSize = cellSize;
+        this.invalidMagic = new boolean[maze.length][maze[0].length];
 
         overrideCellColors = new Color[maze.length][maze[0].length];
         overrideCellColors[maze.length - 1][maze[0].length - 1] = Color.GREEN;
@@ -31,6 +33,8 @@ public class MazePanel extends JPanel {
                         g.setColor(Color.WHITE);
                     if (maze[i][j] == 1) // Blocked
                         g.setColor(Color.BLACK);
+                    if (invalidMagic[i][j])
+                        g.setColor(Color.PINK);
                 } else {
                     g.setColor(overrideCellColors[i][j]);
                 }

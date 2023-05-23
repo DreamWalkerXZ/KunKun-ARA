@@ -110,7 +110,8 @@ public class GameGUI {
                     }
                 }
             } else {
-                mazePanel.overrideCellColor(magic[magicIndex][1], magic[magicIndex][2], Color.PINK);
+                System.out.println("Magic failed at " + magic[magicIndex][1] + ", " + magic[magicIndex][2] + "");
+                mazePanel.invalidMagic[magic[magicIndex][1]][magic[magicIndex][2]] = true;
             }
             if (magicIndex < magic.length - 1)
                 magicIndex++;
