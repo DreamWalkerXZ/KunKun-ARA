@@ -77,41 +77,25 @@ public class MazeGameFrame extends JFrame implements ActionListener {
 
     public void showPath() {
         JFrame frame = new JFrame("Path at time = " + Maze.getEpsilon());
-        JTextPane textPane = new JTextPane();
-        textPane.setFont(new Font(Font.MONOSPACED, Font.BOLD, 500 / maze.length));
-        Document doc = textPane.getStyledDocument();
-        
-        SimpleAttributeSet red = new SimpleAttributeSet();
-        StyleConstants.setForeground(red, Color.RED);
 
-        try {
-            int[][] mazeCopy = new int[maze.length][maze[0].length];
-            for (int i = 0; i < maze.length; i++) {
-                for (int j = 0; j < maze[0].length; j++) {
-                    mazeCopy[i][j] = maze[i][j];
-                }
+        int[][] mazeCopy = new int[maze.length][maze[0].length];
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[0].length; j++) {
+                mazeCopy[i][j] = maze[i][j];
             }
-            mazeCopy[Maze.nikeRow][Maze.nikeCol] = 2;
-            for (Node node : path) {
-                mazeCopy[node.row][node.col] = 2;
-            }
-            for (int[] ints : mazeCopy) {
-                for (int j = 0; j < maze[0].length; j++) {
-                    if (ints[j] == 0) {
-                        doc.insertString(doc.getLength(), "  ", null);
-                    } else if (ints[j] == 1) {
-                        doc.insertString(doc.getLength(), "██", null);
-                    } else if (ints[j] == 2) {
-                        doc.insertString(doc.getLength(), "██", red);
-                    }
-                }
-                doc.insertString(doc.getLength(), "\n", null);
-            }
-        } catch (Exception e) {
-            System.out.println(e);
         }
 
-        JScrollPane scrollPane = new JScrollPane(textPane);
+        mazeCopy[Maze.nikeRow][Maze.nikeCol] = 2;
+
+        for (Node node : path) {
+            mazeCopy[node.row][node.col] = 2;
+        }
+
+        int cellSize = 600 / Math.max(maze.length, maze[0].length);
+        MazePanel mazePanel = new MazePanel(mazeCopy, cellSize);
+        mazePanel.setPreferredSize(new Dimension(maze[0].length * cellSize, maze.length * cellSize));
+
+        JScrollPane scrollPane = new JScrollPane(mazePanel);
         frame.add(scrollPane);
 
         frame.pack();
