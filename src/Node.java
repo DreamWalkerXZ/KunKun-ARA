@@ -13,7 +13,7 @@ public class Node implements Comparable<Node> {
         this.parent = parent;
     }
 
-    public Node(Node node){
+    public Node(Node node) {
         this.row = node.row;
         this.col = node.col;
         this.g = node.g;
@@ -27,13 +27,13 @@ public class Node implements Comparable<Node> {
     }
 
     @Override
-    public boolean equals(Object other){
+    public boolean equals(Object other) {
         Node other2 = (Node) other;
         return this.row == other2.row && this.col == other2.col && this.g == other2.g && this.h == other2.h;
     }
 
     @Override
-    public String toString(){
-        return "row:" + row + "    col:" +  col + "    g:" + g + "    h:" + h ;
+    public String toString() {
+        return "row:" + row + "    col:" + col + "    g:" + g + "    h:" + h;
     }
 }

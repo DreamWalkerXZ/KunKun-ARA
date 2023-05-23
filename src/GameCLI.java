@@ -31,12 +31,14 @@ public class GameCLI {
         this.question = question;
         this.finalPath = new Queue<FinalPathElement>();
         ARAStar araStar = new ARAStar(maze, epsilon);
-        path = araStar.iterate(new Node(0, 0, 0, maze.length + maze[0].length - 2, null));
-        if (!path.isEmpty()) path.pop();
+        path = araStar.iterate(new Node(0, 0, 0, Math.sqrt(Math.pow(maze.length - 1, 2)
+                + Math.pow(maze[0].length - 1, 2)), null));
+        if (!path.isEmpty())
+            path.pop();
     }
 
     private void printPath() {
-        System.out.println("Current time = " + epsilon + ", Path length = " + (path.size() + 1));
+        System.out.println(path.size() + 1);
         System.out.print(nikeRow + " " + nikeCol + " ");
         for (Node node : path) {
             System.out.print(node.row + " " + node.col + " ");
@@ -45,19 +47,16 @@ public class GameCLI {
     }
 
     private void action() {
-        // If the epsilon is equal to the epsilon of the next magic point
         if (epsilon == magic[magicIndex][0]) {
-            System.out.printf("At epsilon == %d, Nike is at %d, %d\n", magic[magicIndex][0], nikeRow, nikeCol);
-            // Need to check whether the magic is valid
             if (!(nikeRow == magic[magicIndex][1] && nikeCol == magic[magicIndex][2])) {
-                System.out.printf("maze[%d][%d] = 1\n", magic[magicIndex][1], magic[magicIndex][2]);
                 maze[magic[magicIndex][1]][magic[magicIndex][2]] = 1;
                 for (Node node : path) {
                     if (node.row == magic[magicIndex][1] && node.col == magic[magicIndex][2]) {
                         // Current path was blocked by magic
                         ARAStar araStar = new ARAStar(maze, epsilon);
                         path = araStar.iterate(
-                                new Node(nikeRow, nikeCol, 0, maze.length + maze[0].length - nikeRow - nikeCol, null));
+                                new Node(nikeRow, nikeCol, 0, Math.sqrt(Math.pow(maze.length - 1 - nikeRow, 2)
+                                        + Math.pow(maze[0].length - 1 - nikeCol, 2)), null));
                         path.pop();
                         break;
                     }
@@ -68,17 +67,18 @@ public class GameCLI {
         }
 
         if (epsilon == question[questionIndex]) {
-            // printPath();
-            if (questionIndex < question.length - 1) questionIndex++;
+            printPath();
+            if (questionIndex < question.length - 1)
+                questionIndex++;
         }
-        
+
         if (!path.isEmpty()) {
             // Move one step further on the path
-            printPath();
             Node node = path.pop();
             nikeRow = node.row;
             nikeCol = node.col;
-            if (epsilon > 1) epsilon--;
+            if (epsilon > 1)
+                epsilon--;
         }
     }
 

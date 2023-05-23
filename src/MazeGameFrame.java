@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MazeGameFrame extends JFrame implements ActionListener{
+public class MazeGameFrame extends JFrame implements ActionListener {
 
     private final int WIDTH;
     private final int HEIGTH;
@@ -32,8 +32,10 @@ public class MazeGameFrame extends JFrame implements ActionListener{
         this.magic = magic;
         this.question = question;
         araStar = new ARAStar(maze, epsilon);
-        path = araStar.iterate(new Node(0,0,0,maze.length + maze[0].length - 2,null));
-        if(!path.isEmpty()) path.pop();
+        path = araStar.iterate(new Node(0, 0, 0, Math.sqrt(Math.pow(maze.length - 1, 2)
+                + Math.pow(maze[0].length - 1, 2)), null));
+        if (!path.isEmpty())
+            path.pop();
 
         setSize(WIDTH, HEIGTH);
         setLocationRelativeTo(null);
@@ -63,7 +65,7 @@ public class MazeGameFrame extends JFrame implements ActionListener{
 
     private void addNextButton() {
         JButton button = new JButton("Next Step");
-        button.setLocation(HEIGTH - 60,  240);
+        button.setLocation(HEIGTH - 60, 240);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -119,7 +121,9 @@ public class MazeGameFrame extends JFrame implements ActionListener{
                 if (flag) {
                     araStar = new ARAStar(maze, Maze.getEpsilon());
                     path = araStar.iterate(new Node(Maze.nikeRow, Maze.nikeCol, 0,
-                        Math.sqrt(Math.pow(maze.length -1 - Maze.nikeRow,2) + Math.pow(maze[0].length -1 - Maze.nikeCol,2)), null));
+                            Math.sqrt(Math.pow(maze.length - 1 - Maze.nikeRow, 2)
+                                    + Math.pow(maze[0].length - 1 - Maze.nikeCol, 2)),
+                            null));
                     path.pop();
                 }
             }
@@ -139,7 +143,7 @@ public class MazeGameFrame extends JFrame implements ActionListener{
     }
 
     @Override
-    public void actionPerformed(ActionEvent event){
+    public void actionPerformed(ActionEvent event) {
         while (Maze.getEpsilon() > question[questionIndex]) {
             action();
         }

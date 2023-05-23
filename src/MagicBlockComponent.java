@@ -9,7 +9,7 @@ public class MagicBlockComponent extends MazeComponent {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponents(g);
-        g.setColor(Color.YELLOW);
+        g.setColor(Color.RED);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         g.setColor(Color.BLACK);
         g.drawRect(0, 0, this.getWidth(), this.getHeight());

@@ -1,7 +1,7 @@
 import java.awt.*;
 
 public class NikeComponent extends MazeComponent {
-    
+
     public NikeComponent(MazePoint mazePoint, Point location, int size) {
         super(mazePoint, location, size);
     }

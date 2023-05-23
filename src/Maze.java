@@ -34,18 +34,19 @@ public class Maze extends JComponent {
             for (int j = 0; j < Maze_width; j++) {
                 if (maze[i][j] == 1)
                     putChessOnBoard(new BlockComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
-                else putChessOnBoard(new PathComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
+                else
+                    putChessOnBoard(new PathComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
             }
         }
-        initNikeOnBoard(0,0);
+        initNikeOnBoard(0, 0);
         epsilonLabel = new JLabel("e = " + epsilon);
         epsilonLabel.setLocation(325, 10);
         epsilonLabel.setSize(300, 60);
         epsilonLabel.setFont(new Font("Rockwell", Font.BOLD, 30));
         positionLabel = new JLabel("Nike is at (0,0)");
-        positionLabel.setLocation(675,10);
-        positionLabel.setSize(300,60);
-        positionLabel.setFont(new Font("Rockwell", Font.BOLD,30));
+        positionLabel.setLocation(675, 10);
+        positionLabel.setSize(300, 60);
+        positionLabel.setFont(new Font("Rockwell", Font.BOLD, 30));
     }
 
     public MazeComponent[][] getMazeComponents() {
@@ -69,18 +70,18 @@ public class Maze extends JComponent {
         mazeComponents[row2][col2] = chess2;
         nikeRow = row1;
         nikeCol = col1;
-        if(epsilon > 1) epsilon--;
+        if (epsilon > 1)
+            epsilon--;
         epsilonLabel.setText("e = " + epsilon);
         positionLabel.setText("Nike is at (" + nikeRow + "," + nikeCol + ")");
         chess1.repaint();
         chess2.repaint();
     }
 
-    public void blocken(int i, int j){
+    public void blocken(int i, int j) {
         putChessOnBoard(new MagicBlockComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
         mazeComponents[i][j].repaint();
     }
-
 
     private void initNikeOnBoard(int row, int col) {
         MazeComponent mazeComponent = new NikeComponent(new MazePoint(row, col), calculatePoint(row, col), Cell_size);
@@ -88,13 +89,11 @@ public class Maze extends JComponent {
         putChessOnBoard(mazeComponent);
     }
 
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     }
-
 
     public Point calculatePoint(int row, int col) {
         return new Point(col * Cell_size, row * Cell_size);
