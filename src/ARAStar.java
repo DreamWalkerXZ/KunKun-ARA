@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Stack;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
 
@@ -150,7 +151,7 @@ public class ARAStar {
             // publish(maze, path);
             return path;
         } else {
-            System.out.println("epsilonPrime <= 1!");
+            StdOut.println("epsilonPrime <= 1!");
             return null;
         }
     }
