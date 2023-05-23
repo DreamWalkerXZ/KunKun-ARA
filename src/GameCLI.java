@@ -66,7 +66,7 @@ public class GameCLI {
                 magicIndex++;
         }
 
-        if (epsilon == question[questionIndex]) {
+        if (question.length > 0 && epsilon == question[questionIndex]) {
             printPath();
             if (questionIndex < question.length - 1)
                 questionIndex++;
