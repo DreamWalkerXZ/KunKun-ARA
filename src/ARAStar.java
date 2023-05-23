@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class ARAStar {
     private int[][] maze;
-    private Node start;
     private Node goal;
     private static final int[][] DIRECTIONS = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 },{ -1 , -1},{ -1 , 1 },{ 1 , -1 },{ 1 , 1 }};
     private MinPQ<Node> OPEN = new MinPQ<>();
@@ -60,10 +59,6 @@ public class ARAStar {
 
     private static double heuristic(int[] a, int[] b) {
         return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
-    }
-
-    private static boolean isValid(int row, int col, int numRows, int numCols) {
-        return row >= 0 && row < numRows && col >= 0 && col < numCols;
     }
 
     private double fValue(Node s){
@@ -174,7 +169,6 @@ public class ARAStar {
         this.accessed = new Node[height][width];
         this.epsilon = epsilon;
         this.epsilonPrime = epsilon;
-        this.start = new Node(0, 0, 0, height + width - 2, null);
         this.goal = new Node(height - 1, width - 1, Double.POSITIVE_INFINITY, 0, null);
         this.path = new Stack<>();
     }
