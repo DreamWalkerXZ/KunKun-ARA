@@ -59,7 +59,7 @@ public class ARAStar {
     }
 
     private static double heuristic(int[] a, int[] b) {
-        return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
+        return Math.sqrt(Math.pow(a[0] - b[0],2) + Math.pow(a[1] - b[1],2));
     }
 
     private double fValue(Node s){
