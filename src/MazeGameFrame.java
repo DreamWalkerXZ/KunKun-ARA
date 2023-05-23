@@ -1,6 +1,9 @@
 import edu.princeton.cs.algs4.Stack;
 
 import javax.swing.*;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -74,32 +77,41 @@ public class MazeGameFrame extends JFrame implements ActionListener {
 
     public void showPath() {
         JFrame frame = new JFrame("Path at time = " + Maze.getEpsilon());
-        JTextArea textArea = new JTextArea();
-        textArea.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
-        int[][] mazeCopy = new int[maze.length][maze[0].length];
-        for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze[0].length; j++) {
-                mazeCopy[i][j] = maze[i][j];
-            }
-        }
-        mazeCopy[Maze.nikeRow][Maze.nikeCol] = 2;
-        for (Node node : path) {
-            mazeCopy[node.row][node.col] = 2;
-        }
-        for (int[] ints : mazeCopy) {
-            for (int j = 0; j < maze[0].length; j++) {
-                if (ints[j] == 0) {
-                    textArea.append("  ");
-                } else if (ints[j] == 1) {
-                    textArea.append("██");
-                } else if (ints[j] == 2) {
-                    textArea.append("░░");
+        JTextPane textPane = new JTextPane();
+        textPane.setFont(new Font(Font.MONOSPACED, Font.BOLD, 500 / maze.length));
+        Document doc = textPane.getStyledDocument();
+        
+        SimpleAttributeSet red = new SimpleAttributeSet();
+        StyleConstants.setForeground(red, Color.RED);
+
+        try {
+            int[][] mazeCopy = new int[maze.length][maze[0].length];
+            for (int i = 0; i < maze.length; i++) {
+                for (int j = 0; j < maze[0].length; j++) {
+                    mazeCopy[i][j] = maze[i][j];
                 }
             }
-            textArea.append("\n");
+            mazeCopy[Maze.nikeRow][Maze.nikeCol] = 2;
+            for (Node node : path) {
+                mazeCopy[node.row][node.col] = 2;
+            }
+            for (int[] ints : mazeCopy) {
+                for (int j = 0; j < maze[0].length; j++) {
+                    if (ints[j] == 0) {
+                        doc.insertString(doc.getLength(), "  ", null);
+                    } else if (ints[j] == 1) {
+                        doc.insertString(doc.getLength(), "██", null);
+                    } else if (ints[j] == 2) {
+                        doc.insertString(doc.getLength(), "██", red);
+                    }
+                }
+                doc.insertString(doc.getLength(), "\n", null);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
 
-        JScrollPane scrollPane = new JScrollPane(textArea);
+        JScrollPane scrollPane = new JScrollPane(textPane);
         frame.add(scrollPane);
 
         frame.pack();
@@ -126,6 +138,8 @@ public class MazeGameFrame extends JFrame implements ActionListener {
                             null));
                     path.pop();
                 }
+            } else {
+                Maze.invalidBlocken(magic[magicIndex][1], magic[magicIndex][2]);
             }
             if (magicIndex < magic.length - 1)
                 magicIndex++;

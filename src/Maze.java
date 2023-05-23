@@ -32,10 +32,14 @@ public class Maze extends JComponent {
 
         for (int i = 0; i < Maze_height; i++) {
             for (int j = 0; j < Maze_width; j++) {
-                if (maze[i][j] == 1)
-                    putChessOnBoard(new BlockComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
-                else
-                    putChessOnBoard(new PathComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
+                if (i == Maze_height - 1 && j == Maze_width - 1) {
+                    putChessOnBoard(new TreasureComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
+                } else {
+                    if (maze[i][j] == 1)
+                        putChessOnBoard(new BlockComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
+                    else
+                        putChessOnBoard(new PathComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
+                }
             }
         }
         initNikeOnBoard(0, 0);
@@ -74,12 +78,22 @@ public class Maze extends JComponent {
             epsilon--;
         epsilonLabel.setText("e = " + epsilon);
         positionLabel.setText("Nike is at (" + nikeRow + "," + nikeCol + ")");
+        if (nikeRow == Maze_height - 1 && nikeCol == Maze_width - 1) {
+            System.out.println(chess2.getChessboardPoint().getX() + " " + chess2.getChessboardPoint().getY());
+            chess2 = new PathComponent(chess2.getChessboardPoint(), calculatePoint(chess2.getChessboardPoint().getX(), chess2.getChessboardPoint().getY()), Cell_size);
+            putChessOnBoard(chess2);
+        }
         chess1.repaint();
         chess2.repaint();
     }
 
     public void blocken(int i, int j) {
         putChessOnBoard(new MagicBlockComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
+        mazeComponents[i][j].repaint();
+    }
+
+    public void invalidBlocken(int i, int j) {
+        putChessOnBoard(new InvalidMagicBlockComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
         mazeComponents[i][j].repaint();
     }
 
