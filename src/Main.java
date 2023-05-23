@@ -1,4 +1,3 @@
-import javax.swing.*;
 import edu.princeton.cs.algs4.StdIn;
 
 public class Main {
@@ -30,10 +29,8 @@ public class Main {
             gameCLI.run();
         }
         if (args.length == 0 || (args.length > 0 && args[0].equals("gui"))) {
-            SwingUtilities.invokeLater(() -> {
-                MazeGameFrame mainFrame = new MazeGameFrame(1000, 800, epsilon, maze, magic, question);
-                mainFrame.setVisible(true);
-            });
+            GameGUI gameGUI = new GameGUI(epsilon, maze, magic, question);
+            gameGUI.run();
         }
     }
 }

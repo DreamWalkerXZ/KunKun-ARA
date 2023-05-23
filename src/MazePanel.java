@@ -1,31 +1,46 @@
-import java.awt.Color;
-import java.awt.Graphics;
-
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 public class MazePanel extends JPanel {
+
     private int[][] maze;
     private int cellSize;
+    private Color[][] overrideCellColors;
 
     public MazePanel(int[][] maze, int cellSize) {
         this.maze = maze;
         this.cellSize = cellSize;
+
+        overrideCellColors = new Color[maze.length][maze[0].length];
+        overrideCellColors[maze.length - 1][maze[0].length - 1] = Color.GREEN;
+    }
+
+    public void overrideCellColor(int row, int col, Color color) {
+        overrideCellColors[row][col] = color;
+        repaint(); // Trigger a call to paintComponent
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         for (int i = 0; i < maze.length; i++) {
             for (int j = 0; j < maze[0].length; j++) {
-                if (maze[i][j] == 0) {
-                    g.setColor(Color.WHITE);
-                } else if (maze[i][j] == 1) {
-                    g.setColor(Color.BLACK);
-                } else if (maze[i][j] == 2) {
-                    g.setColor(Color.RED);
+                if (overrideCellColors[i][j] == null) {
+                    if (maze[i][j] == 0) // Not blocked
+                        g.setColor(Color.WHITE);
+                    if (maze[i][j] == 1) // Blocked
+                        g.setColor(Color.BLACK);
+                } else {
+                    g.setColor(overrideCellColors[i][j]);
                 }
                 g.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
             }
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(maze[0].length * cellSize, maze.length * cellSize);
     }
 }
