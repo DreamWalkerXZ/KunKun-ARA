@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Stack;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
 
@@ -110,23 +111,23 @@ public class ARAStar {
                 mazeCopy[i][j] = maze[i][j];
             }
         }
-        System.out.println("Path with epsilonPrime = " + epsilonPrime + ", length = " + path.size() + ":");
+        StdOut.println("Path with epsilonPrime = " + epsilonPrime + ", length = " + path.size() + ":");
         for (Node node : path) {
             mazeCopy[node.row][node.col] = 2;
         }
         for (int[] ints : mazeCopy) {
             for (int j = 0; j < mazeCopy[0].length; j++) {
                 if (ints[j] == 0) {
-                    System.out.print("  ");
+                    StdOut.print("  ");
                 } else if (ints[j] == 1) {
-                    System.out.print("██");
+                    StdOut.print("██");
                 } else if (ints[j] == 2) {
-                    System.out.print("░░");
+                    StdOut.print("░░");
                 }
             }
-            System.out.println();
+            StdOut.println();
         }
-        System.out.println();
+        StdOut.println();
     }
 
     public Stack<Node> firstIterate(Node start) {
@@ -148,7 +149,7 @@ public class ARAStar {
             publish(maze, path);
             return path;
         } else {
-            System.out.println("epsilonPrime <= 1!");
+            StdOut.println("epsilonPrime <= 1!");
             return null;
         }
     }
