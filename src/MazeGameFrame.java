@@ -23,7 +23,7 @@ public class MazeGameFrame extends JFrame implements ActionListener{
     Stack<Node> path;
 
     public MazeGameFrame(int width, int height, int epsilon, int[][] maze, int[][] magic, int[] question) {
-        setTitle("2022 CS102A Project Demo"); //设置标题
+        setTitle("2022 CS103B Project ARA*"); //设置标题
         this.WIDTH = width;
         this.HEIGTH = height;
         this.epsilon = epsilon;
@@ -94,6 +94,7 @@ public class MazeGameFrame extends JFrame implements ActionListener{
 
     private void Magical(){
         if (Maze.getEpsilon() == magic[magicIndex][0]){
+            if(magic[magicIndex][1] == Maze.nikeRow && magic[magicIndex][2] == Maze.nikeCol) return;
             boolean flag = false;
             for (Node node: path) {
                 if (node.row == magic[magicIndex][1] && node.col == magic[magicIndex][2]){
