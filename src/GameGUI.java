@@ -39,7 +39,7 @@ public class GameGUI {
         mazePanel.overrideCellColor(nikeRow, nikeCol, Color.ORANGE);
         mazePanel.setPreferredSize(new Dimension(maze[0].length * cellSize, maze.length * cellSize));
 
-        epsilonLabel = new JLabel("Epsilon: " + epsilon);
+        epsilonLabel = new JLabel("Time = " + epsilon);
         epsilonLabel.setHorizontalAlignment(JLabel.CENTER);
         epsilonLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
 
