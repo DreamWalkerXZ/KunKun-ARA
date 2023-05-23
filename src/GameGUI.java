@@ -17,6 +17,7 @@ public class GameGUI {
     Stack<Node> path;
     private int nikeRow = 0;
     private int nikeCol = 0;
+    private Color previousColor = null;
     private JLabel epsilonLabel;
     private MazePanel mazePanel;
     private JFrame frame;
@@ -110,8 +111,7 @@ public class GameGUI {
                     }
                 }
             } else {
-                System.out.println("Magic failed at " + magic[magicIndex][1] + ", " + magic[magicIndex][2] + "");
-                mazePanel.invalidMagic[magic[magicIndex][1]][magic[magicIndex][2]] = true;
+                previousColor = Color.PINK;
             }
             if (magicIndex < magic.length - 1)
                 magicIndex++;
@@ -125,10 +125,19 @@ public class GameGUI {
 
         if (!path.isEmpty()) {
             // Move one step further on the path
-            mazePanel.overrideCellColor(nikeRow, nikeCol, null);
+            if (previousColor != null) {
+                mazePanel.overrideCellColor(nikeRow, nikeCol, previousColor);
+            } else {
+                mazePanel.overrideCellColor(nikeRow, nikeCol, null);
+            }
             Node node = path.pop();
             nikeRow = node.row;
             nikeCol = node.col;
+            if (mazePanel.getOverrideCellColor(node.row, node.col) == Color.PINK) {
+                previousColor = Color.PINK;
+            } else {
+                previousColor = null;
+            }
             mazePanel.overrideCellColor(nikeRow, nikeCol, Color.ORANGE);
             if (epsilon > 1)
                 epsilon--;
