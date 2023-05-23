@@ -95,7 +95,7 @@ public class GameGUI {
     }
 
     private void action() {
-        if (epsilon == magic[magicIndex][0]) {
+        if (magic.length > 0 && epsilon == magic[magicIndex][0]) {
             if (!(nikeRow == magic[magicIndex][1] && nikeCol == magic[magicIndex][2])) {
                 maze[magic[magicIndex][1]][magic[magicIndex][2]] = 1;
                 mazePanel.overrideCellColor(magic[magicIndex][1], magic[magicIndex][2], Color.MAGENTA);
