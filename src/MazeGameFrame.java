@@ -1,9 +1,6 @@
 import edu.princeton.cs.algs4.Stack;
 
 import javax.swing.*;
-import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
