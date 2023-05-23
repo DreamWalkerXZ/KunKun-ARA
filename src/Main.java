@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import edu.princeton.cs.algs4.StdIn;
 
@@ -25,9 +24,16 @@ public class Main {
         for (int i = 0; i < k; i++) {
             question[i] = StdIn.readInt();
         }
-        SwingUtilities.invokeLater(() -> {
-            MazeGameFrame mainFrame = new MazeGameFrame(1000, 800,epsilon,maze,magic,question);
-            mainFrame.setVisible(true);
-        });
+        // Read arguments from stdin to determine whether to use GUI or CLI
+        if (args.length > 0 && args[0].equals("cli")) {
+            GameCLI gameCLI = new GameCLI(epsilon,maze,magic,question);
+            gameCLI.run();
+        }
+        if (args.length == 0 || (args.length > 0 && args[0].equals("gui"))) {
+            SwingUtilities.invokeLater(() -> {
+                MazeGameFrame mainFrame = new MazeGameFrame(1000, 800,epsilon,maze,magic,question);
+                mainFrame.setVisible(true);
+            });
+        }
     }
 }

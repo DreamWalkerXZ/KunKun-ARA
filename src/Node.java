@@ -1,4 +1,3 @@
-
 public class Node implements Comparable<Node> {
     int row;
     int col;

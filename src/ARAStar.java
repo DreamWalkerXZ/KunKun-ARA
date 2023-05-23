@@ -104,36 +104,38 @@ public class ARAStar {
     }
 
     public void publish(int[][] maze, Stack<Node> path){
-        int[][] mazeCopy = new int[maze.length][maze[0].length];
-        for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze[0].length; j++) {
-                mazeCopy[i][j] = maze[i][j];
-            }
-        }
-        System.out.println("Path with epsilonPrime = " + epsilonPrime + ", length = " + path.size() + ":");
+        // int[][] mazeCopy = new int[maze.length][maze[0].length];
+        // for (int i = 0; i < maze.length; i++) {
+        //     for (int j = 0; j < maze[0].length; j++) {
+        //         mazeCopy[i][j] = maze[i][j];
+        //     }
+        // }
+        // System.out.println("Path with epsilonPrime = " + epsilonPrime + ", length = " + path.size() + ":");
+        System.out.println(path.size());
         for (Node node : path) {
-            mazeCopy[node.row][node.col] = 2;
+            // mazeCopy[node.row][node.col] = 2;
+            System.out.println(node.row + " " + node.col);
         }
-        for (int[] ints : mazeCopy) {
-            for (int j = 0; j < mazeCopy[0].length; j++) {
-                if (ints[j] == 0) {
-                    System.out.print("  ");
-                } else if (ints[j] == 1) {
-                    System.out.print("██");
-                } else if (ints[j] == 2) {
-                    System.out.print("░░");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
+        // for (int[] ints : mazeCopy) {
+        //     for (int j = 0; j < mazeCopy[0].length; j++) {
+        //         if (ints[j] == 0) {
+        //             System.out.print("  ");
+        //         } else if (ints[j] == 1) {
+        //             System.out.print("██");
+        //         } else if (ints[j] == 2) {
+        //             System.out.print("░░");
+        //         }
+        //     }
+        //     System.out.println();
+        // }
+        // System.out.println();
     }
 
     public Stack<Node> firstIterate(Node start) {
         OPEN.insert(start);
         improvePath(maze, goal, path);
         epsilonPrime = Math.min(epsilon, goal.g / findMinSum());
-        publish(maze, path);
+        // publish(maze, path);
         return path;
     }
 
@@ -145,7 +147,7 @@ public class ARAStar {
             CLOSED.clear();
             improvePath(maze, goal, path);
             epsilonPrime = Math.min(epsilon, goal.g / findMinSum());
-            publish(maze, path);
+            // publish(maze, path);
             return path;
         } else {
             System.out.println("epsilonPrime <= 1!");

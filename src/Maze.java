@@ -1,7 +1,5 @@
-
 import javax.swing.*;
 import java.awt.*;
-
 
 public class Maze extends JComponent {
 
@@ -16,7 +14,6 @@ public class Maze extends JComponent {
     private int[][] maze;
     public int nikeRow = 0;
     public int nikeCol = 0;
-
 
     public Maze(int width, int height, int epsilon, int[][] maze) {
         Maze_height = maze.length;
@@ -65,7 +62,6 @@ public class Maze extends JComponent {
     }
 
     public void swapMazeComponents(MazeComponent chess1, MazeComponent chess2) {
-
         chess1.swapLocation(chess2);
         int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
         mazeComponents[row1][col1] = chess1;
@@ -81,7 +77,7 @@ public class Maze extends JComponent {
     }
 
     public void blocken(int i, int j){
-        putChessOnBoard(new BlockComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
+        putChessOnBoard(new MagicBlockComponent(new MazePoint(i, j), calculatePoint(i, j), Cell_size));
         mazeComponents[i][j].repaint();
     }
 

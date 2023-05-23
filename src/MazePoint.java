@@ -1,4 +1,3 @@
-
 public class MazePoint {
     private int x, y;
 
