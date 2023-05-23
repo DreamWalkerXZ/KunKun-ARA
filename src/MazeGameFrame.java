@@ -119,7 +119,7 @@ public class MazeGameFrame extends JFrame implements ActionListener{
                 if (flag) {
                     araStar = new ARAStar(maze, Maze.getEpsilon());
                     path = araStar.iterate(new Node(Maze.nikeRow, Maze.nikeCol, 0,
-                        Math.sqrt(Math.pow(maze.length - Maze.nikeRow,2) + Math.pow(maze[0].length - Maze.nikeCol,2)), null));
+                        Math.sqrt(Math.pow(maze.length -1 - Maze.nikeRow,2) + Math.pow(maze[0].length -1 - Maze.nikeCol,2)), null));
                     path.pop();
                 }
             }
