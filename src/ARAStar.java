@@ -104,35 +104,27 @@ public class ARAStar {
             return 0.01;
     }
 
-    public Stack<Node> firstIterate(Node start) {
+    private void firstIterate(Node start) {
         OPEN.insert(start);
         improvePath(maze, goal, path);
         epsilonPrime = Math.min(epsilon, goal.g / findMinSum());
-        return path;
     }
 
-    public Stack<Node> otherIterate() {
-        if (epsilonPrime >= minEpsilon) {
-            epsilon -= 1;
-            while (!INCONS.isEmpty())
-                OPEN.insert(INCONS.delMin());
-            CLOSED.clear();
-            improvePath(maze, goal, path);
-            epsilonPrime = Math.min(epsilon, goal.g / findMinSum());
-            return path;
-        } else {
-            StdOut.println("epsilonPrime <= 1!");
-            return null;
-        }
+    private void otherIterate() {
+        epsilon -= 1;
+        while (!INCONS.isEmpty())
+            OPEN.insert(INCONS.delMin());
+        CLOSED.clear();
+        improvePath(maze, goal, path);
+        epsilonPrime = Math.min(epsilon, goal.g / findMinSum());
     }
 
     public Stack<Node> iterate(Node start) {
-        if (isFirstIteration) {
-            isFirstIteration = false;
-            return firstIterate(start);
-        } else {
-            return otherIterate();
+        firstIterate(start);
+        while (epsilonPrime > minEpsilon) {
+            otherIterate();
         }
+        return path;
     }
 
     public ARAStar(int[][] maze, double epsilon) {
