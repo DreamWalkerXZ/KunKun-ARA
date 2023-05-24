@@ -89,7 +89,6 @@ public class GameGUI {
 
     private void buttonPressed() {
         while (question.length > 0 && epsilon > question[questionIndex] && !path.isEmpty()) {
-            System.out.printf("epsilon = %d > question[questionIndex] = %d\n", epsilon, question[questionIndex]);
             action();
         }
         action();
