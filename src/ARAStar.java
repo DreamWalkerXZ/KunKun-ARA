@@ -1,5 +1,4 @@
 import edu.princeton.cs.algs4.Stack;
-import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,6 @@ public class ARAStar {
     private final double minEpsilon = 1.0;
     public Node[][] accessed;
     private Stack<Node> path;
-    private boolean isFirstIteration = true;
 
     public void improvePath(int[][] maze, Node goal, Stack<Node> path) {
         Node s;
