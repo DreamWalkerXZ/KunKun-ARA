@@ -21,6 +21,7 @@ public class GameGUI {
     private JLabel epsilonLabel;
     private MazePanel mazePanel;
     private JFrame frame;
+    boolean terminate = false;
 
     public GameGUI(int epsilon, int[][] maze, int[][] magic, int[] question) {
         this.epsilon = epsilon;
@@ -91,6 +92,10 @@ public class GameGUI {
         while (question.length > 0 && epsilon > question[questionIndex] && !path.isEmpty()) {
             action();
         }
+        while ((terminate || question.length == 0) && !path.isEmpty()) {
+            action();
+        }
+        if(questionIndex == question.length - 1) terminate = true;
         action();
     }
 
