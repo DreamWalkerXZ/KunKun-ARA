@@ -1,5 +1,6 @@
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.Stack;
+import edu.princeton.cs.algs4.StdOut;
 
 public class GameCLI {
 
@@ -38,12 +39,12 @@ public class GameCLI {
     }
 
     private void printPath() {
-        System.out.println(path.size() + 1);
-        System.out.print(nikeRow + " " + nikeCol + " ");
+        StdOut.println(path.size() + 1);
+        StdOut.print(nikeRow + " " + nikeCol + " ");
         for (Node node : path) {
-            System.out.print(node.row + " " + node.col + " ");
+            StdOut.print(node.row + " " + node.col + " ");
         }
-        System.out.println();
+        StdOut.println();
     }
 
     private void action() {
@@ -88,10 +89,10 @@ public class GameCLI {
             action();
         }
         finalPath.enqueue(new FinalPathElement(nikeRow, nikeCol));
-        System.out.println(finalPath.size());
+        StdOut.println(finalPath.size());
         for (FinalPathElement finalPathElement : finalPath) {
-            System.out.print(finalPathElement.x + " " + finalPathElement.y + " ");
+            StdOut.print(finalPathElement.x + " " + finalPathElement.y + " ");
         }
-        System.out.println();
+        StdOut.println();
     }
 }
