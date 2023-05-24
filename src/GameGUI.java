@@ -88,7 +88,7 @@ public class GameGUI {
     }
 
     private void buttonPressed() {
-        while (question.length > 0 && epsilon > question[questionIndex]) {
+        while (question.length > 0 && epsilon > question[questionIndex] && !path.isEmpty()) {
             action();
         }
         action();
