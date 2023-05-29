@@ -17,22 +17,18 @@ public class GameGUI {
     Stack<Node> path;
     private int nikeRow = 0;
     private int nikeCol = 0;
+    private int[] goal;
     private Color previousColor = null;
     private JLabel epsilonLabel;
     private MazePanel mazePanel;
     private JFrame frame;
-    boolean terminate = false;
 
     public GameGUI(int epsilon, int[][] maze, int[][] magic, int[] question) {
         this.epsilon = epsilon;
         this.maze = maze;
         this.magic = magic;
         this.question = question;
-        ARAStar araStar = new ARAStar(maze, epsilon);
-        path = araStar.iterate(new Node(0, 0, 0, Math.sqrt(Math.pow(maze.length - 1, 2)
-                + Math.pow(maze[0].length - 1, 2)), null));
-        if (!path.isEmpty())
-            path.pop();
+        goal = new int[] { maze.length - 1, maze[0].length - 1 };
         frame = new JFrame("GUI");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         int cellSize = 600 / Math.max(maze.length, maze[0].length);
@@ -89,13 +85,9 @@ public class GameGUI {
     }
 
     private void buttonPressed() {
-        while (question.length > 0 && epsilon > question[questionIndex] && !path.isEmpty()) {
+        while (question.length > 0 && epsilon > question[questionIndex]) {
             action();
         }
-        while ((terminate || question.length == 0) && !path.isEmpty()) {
-            action();
-        }
-        if(questionIndex == question.length - 1) terminate = true;
         action();
     }
 
@@ -104,23 +96,15 @@ public class GameGUI {
             if (!(nikeRow == magic[magicIndex][1] && nikeCol == magic[magicIndex][2])) {
                 maze[magic[magicIndex][1]][magic[magicIndex][2]] = 1;
                 mazePanel.overrideCellColor(magic[magicIndex][1], magic[magicIndex][2], Color.MAGENTA);
-                for (Node node : path) {
-                    if (node.row == magic[magicIndex][1] && node.col == magic[magicIndex][2]) {
-                        // Current path was blocked by magic
-                        ARAStar araStar = new ARAStar(maze, epsilon);
-                        path = araStar.iterate(
-                                new Node(nikeRow, nikeCol, 0, Math.sqrt(Math.pow(maze.length - 1 - nikeRow, 2)
-                                        + Math.pow(maze[0].length - 1 - nikeCol, 2)), null));
-                        path.pop();
-                        break;
-                    }
-                }
             } else {
                 previousColor = Color.PINK;
             }
             if (magicIndex < magic.length - 1)
                 magicIndex++;
         }
+
+        path = new Stack<Node>();
+        AStar.findPath(maze, new int[] { nikeRow, nikeCol }, goal, epsilon, path);
 
         if (question.length > 0 && epsilon == question[questionIndex]) {
             showPath();
@@ -129,6 +113,8 @@ public class GameGUI {
         }
 
         if (!path.isEmpty()) {
+            // Remove Nike's current position from the path
+            path.pop();
             // Move one step further on the path
             if (previousColor != null) {
                 mazePanel.overrideCellColor(nikeRow, nikeCol, previousColor);
