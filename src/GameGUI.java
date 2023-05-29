@@ -22,6 +22,7 @@ public class GameGUI {
     private JLabel epsilonLabel;
     private MazePanel mazePanel;
     private JFrame frame;
+    private boolean noMoreQuestions = false;
 
     public GameGUI(int epsilon, int[][] maze, int[][] magic, int[] question) {
         this.epsilon = epsilon;
@@ -85,10 +86,19 @@ public class GameGUI {
     }
 
     private void buttonPressed() {
-        while (question.length > 0 && epsilon > question[questionIndex]) {
+        if (path != null && question[questionIndex] < epsilon - path.size()) {
+            noMoreQuestions = true;
+        }
+        if (noMoreQuestions) {
+            while (nikeRow != goal[0] || nikeCol != goal[1]) {
+                action();
+            }
+        } else {
+            while (question.length > 0 && epsilon > question[questionIndex]) {
+                action();
+            }
             action();
         }
-        action();
     }
 
     private void action() {
@@ -108,8 +118,11 @@ public class GameGUI {
 
         if (question.length > 0 && epsilon == question[questionIndex]) {
             showPath();
-            if (questionIndex < question.length - 1)
+            if (questionIndex < question.length - 1) {
                 questionIndex++;
+            } else {
+                noMoreQuestions = true;
+            }
         }
 
         if (!path.isEmpty()) {
