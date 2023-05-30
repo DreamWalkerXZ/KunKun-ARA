@@ -137,18 +137,20 @@ public class GameGUI {
             } else {
                 mazePanel.overrideCellColor(nikeRow, nikeCol, null);
             }
-            Node node = path.pop();
-            nikeRow = node.row;
-            nikeCol = node.col;
-            if (mazePanel.getOverrideCellColor(node.row, node.col) == Color.PINK) {
-                previousColor = Color.PINK;
-            } else {
-                previousColor = null;
+            if (!path.isEmpty()) {
+                Node node = path.pop();
+                nikeRow = node.row;
+                nikeCol = node.col;
+                if (mazePanel.getOverrideCellColor(node.row, node.col) == Color.PINK) {
+                    previousColor = Color.PINK;
+                } else {
+                    previousColor = null;
+                }
+                mazePanel.overrideCellColor(nikeRow, nikeCol, Color.ORANGE);
+                if (epsilon > 1)
+                    epsilon--;
+                epsilonLabel.setText("Epsilon: " + epsilon);
             }
-            mazePanel.overrideCellColor(nikeRow, nikeCol, Color.ORANGE);
-            if (epsilon > 1)
-                epsilon--;
-            epsilonLabel.setText("Epsilon: " + epsilon);
         }
     }
 }
