@@ -41,7 +41,7 @@ public class GameGUI {
         epsilonLabel.setHorizontalAlignment(JLabel.CENTER);
         epsilonLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
 
-        JButton button = new JButton("Execute Action");
+        JButton button = new JButton("Next Question");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

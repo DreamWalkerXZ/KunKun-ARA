@@ -24,7 +24,7 @@ public class Main {
             question[i] = StdIn.readInt();
         }
         // Read arguments from stdin to determine whether to use GUI or CLI
-        if (args.length > 0 && (args[0].equals("cli") || args[0].equals("terminal"))) {
+        if (args.length > 0 && (args[0].equals("cli"))) {
             GameCLI gameCLI = new GameCLI(epsilon, maze, magic, question);
             gameCLI.run();
         } else {
