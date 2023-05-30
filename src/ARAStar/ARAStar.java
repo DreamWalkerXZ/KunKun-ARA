@@ -1,25 +1,26 @@
+package ARAStar;
 import edu.princeton.cs.algs4.Stack;
 
 import java.util.ArrayList;
 
 public class ARAStar {
     private int[][] maze;
-    private Node0 goal;
+    private Node goal;
     private static final int[][] DIRECTIONS = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 }, { -1, -1 }, { -1, 1 },
             { 1, -1 }, { 1, 1 } };
-    private MinPQ<Node0> OPEN = new MinPQ<>();
-    private ArrayList<Node0> CLOSED = new ArrayList<>();
-    private MinPQ<Node0> INCONS = new MinPQ<>();
+    private MinPQ<Node> OPEN = new MinPQ<>();
+    private ArrayList<Node> CLOSED = new ArrayList<>();
+    private MinPQ<Node> INCONS = new MinPQ<>();
     private int height;
     private int width;
     private double epsilon;
     private double epsilonPrime;
     private final double minEpsilon = 1.0;
-    public Node0[][] accessed;
-    private Stack<Node0> path;
+    public Node[][] accessed;
+    private Stack<Node> path;
 
-    public void improvePath(int[][] maze, Node0 goal, Stack<Node0> path) {
-        Node0 s;
+    public void improvePath(int[][] maze, Node goal, Stack<Node> path) {
+        Node s;
         while ((!OPEN.isEmpty()) && ((s = findMinF(OPEN, fValue(goal))) != null)) {
             CLOSED.add(s);
 
@@ -40,10 +41,10 @@ public class ARAStar {
                 int newCol = s.col + direction[1];
                 if (newRow >= 0 && newRow < height && newCol >= 0 && newCol < width && maze[newRow][newCol] == 0) {
                     if (accessed[newRow][newCol] == null) {
-                        accessed[newRow][newCol] = new Node0(newRow, newCol, Double.POSITIVE_INFINITY,
+                        accessed[newRow][newCol] = new Node(newRow, newCol, Double.POSITIVE_INFINITY,
                                 heuristic(new int[] { newRow, newCol }, new int[] { height - 1, width - 1 }), s);
                     }
-                    Node0 t = accessed[newRow][newCol];
+                    Node t = accessed[newRow][newCol];
                     if (t.parent != null && t.parent.g > s.g)
                         t.parent = s;
                     if (t.g > s.g + heuristic(new int[] { s.row, s.col }, new int[] { t.row, t.col })) {
@@ -62,20 +63,20 @@ public class ARAStar {
         return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
     }
 
-    private double fValue(Node0 s) {
+    private double fValue(Node s) {
         return s.g + epsilonPrime * s.h;
     }
 
-    private Node0 findMinF(MinPQ<Node0> open, double fGoal) {
+    private Node findMinF(MinPQ<Node> open, double fGoal) {
         if (!open.isEmpty()) {
-            Node0 node = open.min();
-            for (Node0 node1 : open) {
+            Node node = open.min();
+            for (Node node1 : open) {
                 if (fValue(node1) < fValue(node)) {
                     node = node1;
                 }
             }
             double min = fValue(node);
-            Node0 minNode = new Node0(node);
+            Node minNode = new Node(node);
             if (fGoal > min) {
                 int index = open.index(node);
                 node.g = Double.NEGATIVE_INFINITY;
@@ -102,7 +103,7 @@ public class ARAStar {
             return 0.01;
     }
 
-    private void firstIterate(Node0 start) {
+    private void firstIterate(Node start) {
         OPEN.insert(start);
         improvePath(maze, goal, path);
         epsilonPrime = Math.min(epsilon, goal.g / findMinSum());
@@ -117,7 +118,7 @@ public class ARAStar {
         epsilonPrime = Math.min(epsilon, goal.g / findMinSum());
     }
 
-    public Stack<Node0> iterate(Node0 start) {
+    public Stack<Node> iterate(Node start) {
         firstIterate(start);
         while (epsilonPrime > minEpsilon) {
             otherIterate();
@@ -129,10 +130,10 @@ public class ARAStar {
         this.maze = maze;
         this.height = maze.length;
         this.width = maze[0].length;
-        this.accessed = new Node0[height][width];
+        this.accessed = new Node[height][width];
         this.epsilon = epsilon;
         this.epsilonPrime = epsilon;
-        this.goal = new Node0(height - 1, width - 1, Double.POSITIVE_INFINITY, 0, null);
+        this.goal = new Node(height - 1, width - 1, Double.POSITIVE_INFINITY, 0, null);
         this.path = new Stack<>();
     }
 }
