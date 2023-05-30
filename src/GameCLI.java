@@ -55,11 +55,13 @@ public class GameCLI {
             // Remove Nike's current position from the path
             path.pop();
             // Move one step further on the path
-            Node node = path.pop();
-            nikeRow = node.row;
-            nikeCol = node.col;
-            if (epsilon > 1)
-                epsilon--;
+            if (!path.isEmpty()) {
+                Node node = path.pop();
+                nikeRow = node.row;
+                nikeCol = node.col;
+                if (epsilon > 1)
+                    epsilon--;
+            }
         }
     }
 
