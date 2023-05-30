@@ -131,13 +131,13 @@ public class GameGUI {
         if (!path.isEmpty()) {
             // Remove Nike's current position from the path
             path.pop();
-            // Move one step further on the path
-            if (previousColor != null) {
-                mazePanel.overrideCellColor(nikeRow, nikeCol, previousColor);
-            } else {
-                mazePanel.overrideCellColor(nikeRow, nikeCol, null);
-            }
             if (!path.isEmpty()) {
+                // Move one step further on the path
+                if (previousColor != null) {
+                    mazePanel.overrideCellColor(nikeRow, nikeCol, previousColor);
+                } else {
+                    mazePanel.overrideCellColor(nikeRow, nikeCol, null);
+                }
                 Node node = path.pop();
                 nikeRow = node.row;
                 nikeCol = node.col;
