@@ -86,7 +86,10 @@ public class GameGUI {
     }
 
     private void buttonPressed() {
-        if (path != null && question[questionIndex] < epsilon - path.size()) {
+        if (question.length == 0){
+            noMoreQuestions = true;
+        }
+        else if (path != null && question[questionIndex] < epsilon - path.size()) {
             noMoreQuestions = true;
         }
         if (noMoreQuestions) {
