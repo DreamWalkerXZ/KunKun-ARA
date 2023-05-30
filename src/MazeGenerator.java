@@ -1,22 +1,105 @@
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
+
+import edu.princeton.cs.algs4.Stack;
+import edu.princeton.cs.algs4.StdOut;
 
 public class MazeGenerator {
 
+    // 用户定义部分
+    static final int ROWS = 100; // 迷宫的行数
+    static final int COLS = 200; // 迷宫的列数
+    static final double P = 0.4; // 打通格子的概率，建议大于 0.3
+    static int MAGIC_LENGTH = 30; // 魔法的个数
+    static int QUESTION_LENGTH = 60; // 问题的个数
+    static double epsilon = 100;
+
     public static void main(String[] args) {
-        int[][] maze = generateMazeWithPath(10, 10, 0.8); // 生成一个 10 行 10 列的迷宫, 0.8 是打通格子的概率
-        printMaze(maze); // 打印迷宫数组
-        System.out.println("isPath: " + isPath(maze)); // 判断迷宫中是否有路径
+        int[][] maze = generateMaze(ROWS, COLS, P); // 生成一个 ROWS * COLS 的迷宫，打通格子的概率为 P
+        int pathLength = isPath(maze);
+        while (pathLength == 0) {
+            maze = generateMaze(ROWS, COLS, P);
+            pathLength = isPath(maze);
+        }
+        int[][] magic = placeSomeMagic(maze, MAGIC_LENGTH); // 生成一个 3 个魔法的迷宫
+        // 确保以 epsilon 搜索到的路径长度小于 epsilon，即有足够的时间走完迷宫
+        while (pathLength >= epsilon) {
+            epsilon = pathLength + 1;
+            pathLength = isPath(maze);
+        }
+        StdOut.println(ROWS + " " + COLS + " " + (int) (epsilon));
+        for (int[] row : maze) {
+            for (int cell : row) {
+                StdOut.print(cell + " ");
+            }
+            StdOut.println();
+        }
+        StdOut.println(MAGIC_LENGTH);
+        // 生成 MAGIC_LENGTH 个不重复的小于 pathLength 的数
+        if (MAGIC_LENGTH > pathLength) {
+            MAGIC_LENGTH = pathLength;
+        }
+        int[] magicSequence = new int[MAGIC_LENGTH];
+        Random random = new Random();
+        for (int i = 0; i < MAGIC_LENGTH; i++) {
+            int magicTime = random.nextInt(pathLength);
+            while (isInArray(magicSequence, magicTime)) {
+                magicTime = random.nextInt(pathLength);
+            }
+            magicSequence[i] = magicTime;
+        }
+        // 降序排序魔法时机
+        magicSequence = Arrays.stream(
+                magicSequence).boxed()
+                .sorted(Collections.reverseOrder())
+                .mapToInt(Integer::intValue)
+                .toArray();
+        for (int i = 0; i < magicSequence.length; i++) {
+            magic[i][0] = magicSequence[i];
+        }
+        for (int[] row : magic) {
+            for (int cell : row) {
+                StdOut.print(cell + " ");
+            }
+            StdOut.println();
+        }
+        StdOut.println(QUESTION_LENGTH);
+        // 生成 QUESTION_LENGTH 个不重复的小于 pathLength 的数
+        if (QUESTION_LENGTH > pathLength) {
+            QUESTION_LENGTH = pathLength;
+        }
+        int[] questions = new int[QUESTION_LENGTH];
+        for (int i = 0; i < QUESTION_LENGTH; i++) {
+            int question = random.nextInt(pathLength);
+            while (isInArray(questions, question)) {
+                question = random.nextInt(pathLength);
+            }
+            questions[i] = question;
+        }
+        // 降序排序问题
+        questions = Arrays.stream(
+                questions).boxed()
+                .sorted(Collections.reverseOrder())
+                .mapToInt(Integer::intValue)
+                .toArray();
+        for (int question : questions) {
+            StdOut.println(question);
+        }
+    }
+
+    private static boolean isInArray(int[] array, int key) {
+        for (final int i : array) {
+            if (i == key) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static int[][] generateMaze(int rows, int cols, double p) {
         Random random = new Random();
         int[][] maze = new int[rows][cols];
-
-        // 初始化迷宫，将所有格子设为墙壁
-        for (int i = 0; i < rows; i++) {
-            Arrays.fill(maze[i], 1);
-        }
 
         // 打通入口和出口
         maze[0][0] = 0;
@@ -27,6 +110,8 @@ public class MazeGenerator {
             for (int j = 0; j < rows; j++) {
                 if (random.nextDouble() < p) {
                     maze[j][i] = 0;
+                } else {
+                    maze[j][i] = 1;
                 }
             }
         }
@@ -34,60 +119,31 @@ public class MazeGenerator {
         return maze;
     }
 
-    public static void printMaze(int[][] maze) {
-        int rows = maze.length;
-        int cols = maze[0].length;
-        System.out.println("{");
-        for (int i = 0; i < rows; i++) {
-            System.out.print("    {");
-            for (int j = 0; j < cols; j++) {
-                System.out.print(maze[i][j]);
-                if (j != cols - 1) {
-                    System.out.print(", ");
-                }
-            }
-            System.out.print("}");
-            if (i != rows - 1) {
-                System.out.println(",");
-            } else {
-                System.out.println();
-            }
-        }
-        System.out.println("}");
-    }
-
-    private static void dfs(int[][] maze, boolean[][] visited, int row, int col) {
-        int rows = maze.length;
-        int cols = maze[0].length;
-        if (row < 0 || row >= rows || col < 0 || col >= cols || maze[row][col] == 1 || visited[row][col]) {
-            // 超出边界，遇到墙壁或已经访问过的格子，直接返回
-            return;
-        }
-        visited[row][col] = true; // 标记该格子已经访问过
-        dfs(maze, visited, row - 1, col); // 上
-        dfs(maze, visited, row + 1, col); // 下
-        dfs(maze, visited, row, col - 1); // 左
-        dfs(maze, visited, row, col + 1); // 右
-    }
-
-    public static boolean isPath(int[][] maze) {
-        int rows = maze.length;
-        int cols = maze[0].length;
-        boolean[][] visited = new boolean[rows][cols];
-        dfs(maze, visited, 0, 0);
-        if (visited[rows - 1][cols - 1]) {
-            return true;
+    public static int isPath(int[][] maze) {
+        int[] start = { 0, 0 };
+        int[] goal = { maze.length - 1, maze[0].length - 1 };
+        Stack<Node> path = new Stack<>();
+        if (AStar.findPath(maze, start, goal, epsilon, path)) {
+            return path.size();
         } else {
-            return false;
+            return 0;
         }
     }
 
-    public static int[][] generateMazeWithPath(int rows, int cols, double p) {
-        int[][] maze = generateMaze(rows, cols, p);
-        while (!isPath(maze)) {
-            maze = generateMaze(rows, cols, p);
+    public static int[][] placeSomeMagic(int[][] maze, int n) {
+        Random random = new Random();
+        int[][] magic = new int[n][3];
+        for (int i = 0; i < n; i++) {
+            int row = random.nextInt(maze.length);
+            int col = random.nextInt(maze[0].length);
+            if (maze[row][col] == 1) {
+                maze[row][col] = 0;
+                magic[i][1] = row;
+                magic[i][2] = col;
+            } else {
+                i--;
+            }
         }
-        return maze;
+        return magic;
     }
-
 }
